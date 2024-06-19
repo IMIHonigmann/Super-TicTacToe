@@ -6,6 +6,8 @@ let color1 = 'black';
 let color2 = 'red'
 let currentField;
 let chooseCustomField = false;
+let latestWonField;
+let latestChosenField;
 
 let setUpGameOnce = false;
 
@@ -89,24 +91,19 @@ subCellList.forEach(function(subcell) {
           event.target.style.borderRadius = '10px';
         }
 
-
-
-
         // FIXED: when the player is on a won field and chooses a cell in this field, the field gets reverted to white
-      if(document.querySelector('.field' + numberAsString).classList.contains('isDone'))
+        // HERE 1st
+        if(document.querySelector('.field' + numberAsString).classList.contains('isDone'))
       {
 
         for(let i=1; i<=9; i++)
           {
             
-            if(document.querySelector('.field' + i).classList.contains('isDone'))
+            if(!document.querySelector('.field' + i).classList.contains('isDone'))
             {
-              // document.querySelector('.field' + i). maybe this would work
-            }
-            else {
               document.querySelector('.field' + i).classList.remove('isNotEditable');
               document.querySelector('.field' + i).style.backgroundColor = 'white';
-              }
+            }
           }
           chooseCustomField = true;
       }
@@ -146,13 +143,13 @@ subCellList.forEach(function(subcell) {
 
 
   function checkRows(cellTarget) {
-  let cell = cellTarget.classList;
   let parentField = cellTarget.closest('table').closest('td');
 
 
 
   function compareRows(table, cell, othercell1, othercell2)
   {
+    latestChosenField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.toString();
     if(
       !document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.contains('isDone') &&
        document.querySelector('.subcell' + table + cell).style.backgroundColor === document.querySelector('.subcell' + table + othercell1).style.backgroundColor &&
@@ -163,8 +160,26 @@ subCellList.forEach(function(subcell) {
         )
       )
        {
+        latestWonField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.toString();
         document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
         parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
+
+        if(latestChosenField === latestWonField && document.querySelector(latestWonField).classList.contains('isDone'))
+        {
+            for(let i=1; i<=9; i++)
+              {
+                if(!document.querySelector('.field' + i).classList.contains('isDone'))
+                {
+                  document.querySelector('.field' + i).classList.remove('isNotEditable');
+                  document.querySelector('.field' + i).style.backgroundColor = 'white';
+                }
+              }
+              chooseCustomField = true;
+    
+            document.getElementById('winnerText').textContent = latestWonField;
+            latestWonField = '';
+        }
+
          return true;
        }
        return false;
@@ -177,11 +192,10 @@ subCellList.forEach(function(subcell) {
     for(let cell=1; cell<=3; cell++)
       if(compareRows(table, cell, [cell + 3], [cell + 6])) {}
 
-    
     if(compareRows(table, 1, 5, 9)) {}
     if(compareRows(table, 3, 5, 7)) {}
-  
-  }
+    
+    }
 
 }
 

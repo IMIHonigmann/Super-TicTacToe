@@ -19,10 +19,7 @@ subCellList.forEach(function(subcell) {
   
   subcell.addEventListener('click', function(event) {
     let className = event.target.classList[0];
-    let prefix = 'subcell';
     let numberAsString = className.charAt(className.length-1);
-
-    
     let parentField = event.target.closest('table').closest('td');
 
 
@@ -76,19 +73,23 @@ subCellList.forEach(function(subcell) {
 
         if(!parentField.classList.contains('isDone'))
         {
-          if(isX)
-          {
-            event.target.style.backgroundColor = color1;
-            document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
-
-          }
-          else if (!isX) {
-            event.target.style.backgroundColor = color2;
-            document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
-          }
+            const li = document.createElement('li');
+            if(isX)
+            {
+              event.target.style.backgroundColor = color1;
+              event.target.classList.add('color1');
+              li.textContent = color1;
+              document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
               
-          isX = !isX;
-          event.target.style.borderRadius = '10px';
+            }
+            else if (!isX) {
+                event.target.style.backgroundColor = color2;
+                event.target.classList.add('color2');
+                li.textContent = color2;
+                document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
+            }
+            document.getElementById('livecounter').appendChild(li);
+            isX = !isX;
         }
 
 
@@ -160,10 +161,11 @@ subCellList.forEach(function(subcell) {
        document.querySelector('.subcell' + table + cell).style.backgroundColor === document.querySelector('.subcell' + table + othercell2).style.backgroundColor &&
         (
         document.querySelector('.subcell' + table + cell).style.backgroundColor === color1 || 
-        document.querySelector('.subcell' + table + cell).style.backgroundColor === color2  
+        document.querySelector('.subcell' + table + cell).style.backgroundColor === color2
         )
       )
        {
+        // TODO: Implement live counter message here
         latestWonField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.toString();
         document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
         parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
@@ -179,8 +181,13 @@ subCellList.forEach(function(subcell) {
                 }
               }
               chooseCustomField = true;
-    
-            document.getElementById('winnerText').textContent = latestWonField + ' has been captured by player ' + document.querySelector("." + latestWonField).style.backgroundColor;
+
+            const messageText = latestWonField + ' has been captured by player ' + document.querySelector("." + latestWonField).style.backgroundColor;
+            const li = document.createElement('li');
+            li.textContent = 'oooh very nice player ' + document.querySelector("." + latestWonField).style.backgroundColor;
+            document.getElementById('livecounter').appendChild(li);
+            // play oooh sound
+            document.getElementById('winnerText').textContent = messageText;
             latestWonField = '';
         }
 

@@ -14,9 +14,43 @@ th, td {
   font-size: xx-large;
 }
 
-[class^="subtable"] {
-  cursor: pointer;
+
+
+[class^="subtable"],
+.isNotEditable
+{
+    transition-duration: 0.3s;
 }
+
+.color1, 
+.color2 {
+    animation: growBall 0.3s cubic-bezier(.17,.67,.22,1.44) forwards;
+}
+
+@keyframes growBall {
+    0% {
+        opacity: 0;
+        scale: 0.75;
+        border-radius: 40px;
+    }
+    100% {
+        opacity: 1;
+        scale: 1;
+        border-radius: 20px;
+    }
+}
+
+/* hiding it for now because livecounter isn't finished */
+#livecounter {
+    display: none;
+}
+
+
+.isNotEditable, 
+.isDone {
+    cursor: not-allowed;
+  }
+
 
 th {
   background-color: #f2f2f2;

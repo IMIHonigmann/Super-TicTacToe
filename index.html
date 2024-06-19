@@ -4,523 +4,241 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Table</title>
-  <style>
-    table {
-      border-collapse: collapse;
-      align-items: center;
-    }
-
-    th, td {
-      border: 3px solid #dddddd;
-      text-align: left;
-      padding: 40px;
-      font-size: xx-large;
-    }
-
-    [class^="subtable"] {
-      cursor: pointer;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <h2 id="winnerText">
-    text
-  </h2>
-
-  <table class="maintable">
-    <tbody>
-      <tr>
-        <td class="field1">
-
-          <table class="subtable1">
-            <tbody>
-              <tr>
-                <td class="subcell11"></td>
-                <td class="subcell12"></td>
-                <td class="subcell13"></td>
-              </tr>
-              <tr>
-                <td class="subcell14"></td>
-                <td class="subcell15"></td>
-                <td class="subcell16"></td>
-              </tr>
-              <tr>
-                <td class="subcell17"></td>
-                <td class="subcell18"></td>
-                <td class="subcell19"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field2">
-
-          <table class="subtable2">
-            <tbody>
-              <tr>
-                <td class="subcell21"></td>
-                <td class="subcell22"></td>
-                <td class="subcell23"></td>
-              </tr>
-              <tr>
-                <td class="subcell24"></td>
-                <td class="subcell25"></td>
-                <td class="subcell26"></td>
-              </tr>
-              <tr>
-                <td class="subcell27"></td>
-                <td class="subcell28"></td>
-                <td class="subcell29"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field3">
-
-          <table class="subtable3">
-            <tbody>
-              <tr>
-                <td class="subcell31"></td>
-                <td class="subcell32"></td>
-                <td class="subcell33"></td>
-              </tr>
-              <tr>
-                <td class="subcell34"></td>
-                <td class="subcell35"></td>
-                <td class="subcell36"></td>
-              </tr>
-              <tr>
-                <td class="subcell37"></td>
-                <td class="subcell38"></td>
-                <td class="subcell39"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-      </tr>
-      <tr>
-        <td class="field4">
-
-          <table class="subtable4">
-            <tbody>
-              <tr>
-                <td class="subcell41"></td>
-                <td class="subcell42"></td>
-                <td class="subcell43"></td>
-              </tr>
-              <tr>
-                <td class="subcell44"></td>
-                <td class="subcell45"></td>
-                <td class="subcell46"></td>
-              </tr>
-              <tr>
-                <td class="subcell47"></td>
-                <td class="subcell48"></td>
-                <td class="subcell49"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field5">
-
-          <table class="subtable5">
-            <tbody>
-              <tr>
-                <td class="subcell51"></td>
-                <td class="subcell52"></td>
-                <td class="subcell53"></td>
-              </tr>
-              <tr>
-                <td class="subcell54"></td>
-                <td class="subcell55"></td>
-                <td class="subcell56"></td>
-              </tr>
-              <tr>
-                <td class="subcell57"></td>
-                <td class="subcell58"></td>
-                <td class="subcell59"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field6">
-
-          <table class="subtable6">
-            <tbody>
-              <tr>
-                <td class="subcell61"></td>
-                <td class="subcell62"></td>
-                <td class="subcell63"></td>
-              </tr>
-              <tr>
-                <td class="subcell64"></td>
-                <td class="subcell65"></td>
-                <td class="subcell66"></td>
-              </tr>
-              <tr>
-                <td class="subcell67"></td>
-                <td class="subcell68"></td>
-                <td class="subcell69"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-      </tr>
-      <tr>
-        <td class="field7">
-
-          <table class="subtable7">
-            <tbody>
-              <tr>
-                <td class="subcell71"></td>
-                <td class="subcell72"></td>
-                <td class="subcell73"></td>
-              </tr>
-              <tr>
-                <td class="subcell74"></td>
-                <td class="subcell75"></td>
-                <td class="subcell76"></td>
-              </tr>
-              <tr>
-                <td class="subcell77"></td>
-                <td class="subcell78"></td>
-                <td class="subcell79"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field8">
-
-          <table class="subtable8">
-            <tbody>
-              <tr>
-                <td class="subcell81"></td>
-                <td class="subcell82"></td>
-                <td class="subcell83"></td>
-              </tr>
-              <tr>
-                <td class="subcell84"></td>
-                <td class="subcell85"></td>
-                <td class="subcell86"></td>
-              </tr>
-              <tr>
-                <td class="subcell87"></td>
-                <td class="subcell88"></td>
-                <td class="subcell89"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-        <td class="field9">
-
-          <table class="subtable9">
-            <tbody>
-              <tr>
-                <td class="subcell91"></td>
-                <td class="subcell92"></td>
-                <td class="subcell93"></td>
-              </tr>
-              <tr>
-                <td class="subcell94"></td> <!-- Test placement here -->
-                <td class="subcell95"></td>
-                <td class="subcell96"></td>
-              </tr>
-              <tr>
-                <td class="subcell97"></td>
-                <td class="subcell98"></td>
-                <td class="subcell99"></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="container">
+    <div class="centered-div">
+      <div class="container">
+        <h2 id="winnerText">
+          text
+        </h2>
+      </div>
+    
+      <table class="maintable">
+        <tbody>
+          <tr>
+            <td class="field1">
+    
+              <table class="subtable1">
+                <tbody>
+                  <tr>
+                    <td class="subcell11"></td>
+                    <td class="subcell12"></td>
+                    <td class="subcell13"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell14"></td>
+                    <td class="subcell15"></td>
+                    <td class="subcell16"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell17"></td>
+                    <td class="subcell18"></td>
+                    <td class="subcell19"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field2">
+    
+              <table class="subtable2">
+                <tbody>
+                  <tr>
+                    <td class="subcell21"></td>
+                    <td class="subcell22"></td>
+                    <td class="subcell23"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell24"></td>
+                    <td class="subcell25"></td>
+                    <td class="subcell26"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell27"></td>
+                    <td class="subcell28"></td>
+                    <td class="subcell29"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field3">
+    
+              <table class="subtable3">
+                <tbody>
+                  <tr>
+                    <td class="subcell31"></td>
+                    <td class="subcell32"></td>
+                    <td class="subcell33"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell34"></td>
+                    <td class="subcell35"></td>
+                    <td class="subcell36"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell37"></td>
+                    <td class="subcell38"></td>
+                    <td class="subcell39"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+          </tr>
+          <tr>
+            <td class="field4">
+    
+              <table class="subtable4">
+                <tbody>
+                  <tr>
+                    <td class="subcell41"></td>
+                    <td class="subcell42"></td>
+                    <td class="subcell43"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell44"></td>
+                    <td class="subcell45"></td>
+                    <td class="subcell46"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell47"></td>
+                    <td class="subcell48"></td>
+                    <td class="subcell49"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field5">
+    
+              <table class="subtable5">
+                <tbody>
+                  <tr>
+                    <td class="subcell51"></td>
+                    <td class="subcell52"></td>
+                    <td class="subcell53"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell54"></td>
+                    <td class="subcell55"></td>
+                    <td class="subcell56"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell57"></td>
+                    <td class="subcell58"></td>
+                    <td class="subcell59"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field6">
+    
+              <table class="subtable6">
+                <tbody>
+                  <tr>
+                    <td class="subcell61"></td>
+                    <td class="subcell62"></td>
+                    <td class="subcell63"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell64"></td>
+                    <td class="subcell65"></td>
+                    <td class="subcell66"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell67"></td>
+                    <td class="subcell68"></td>
+                    <td class="subcell69"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+          </tr>
+          <tr>
+            <td class="field7">
+    
+              <table class="subtable7">
+                <tbody>
+                  <tr>
+                    <td class="subcell71"></td>
+                    <td class="subcell72"></td>
+                    <td class="subcell73"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell74"></td>
+                    <td class="subcell75"></td>
+                    <td class="subcell76"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell77"></td>
+                    <td class="subcell78"></td>
+                    <td class="subcell79"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field8">
+    
+              <table class="subtable8">
+                <tbody>
+                  <tr>
+                    <td class="subcell81"></td>
+                    <td class="subcell82"></td>
+                    <td class="subcell83"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell84"></td>
+                    <td class="subcell85"></td>
+                    <td class="subcell86"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell87"></td>
+                    <td class="subcell88"></td>
+                    <td class="subcell89"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+            <td class="field9">
+    
+              <table class="subtable9">
+                <tbody>
+                  <tr>
+                    <td class="subcell91"></td>
+                    <td class="subcell92"></td>
+                    <td class="subcell93"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell94"></td> <!-- Test placement here -->
+                    <td class="subcell95"></td>
+                    <td class="subcell96"></td>
+                  </tr>
+                  <tr>
+                    <td class="subcell97"></td>
+                    <td class="subcell98"></td>
+                    <td class="subcell99"></td>
+                  </tr>
+                </tbody>
+              </table>
+    
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 </body>
 
-<script>
-
-  let isX = true;
-  let isFieldEditable;
-  let subCellList = document.querySelectorAll('[class^="subcell"]');
-  let fieldList = document.querySelectorAll('[class^="field"]');
-  let color1 = 'black';
-  let color2 = 'red'
-  let currentField;
-  let chooseCustomField = false;
-
-  let setUpGameOnce = false;
-
-
-  subCellList.forEach(function(subcell) {
-    subcell.style.backgroundColor = '#F2F2F2';
-    
-    
-    
-    subcell.addEventListener('click', function(event) {
-      let className = event.target.classList[0];
-      let prefix = 'subcell';
-      let numberAsString = className.charAt(className.length-1);
-
-      
-      let parentField = event.target.closest('table').closest('td');
-
-
-
-      //if you want to have the next player play in the same field or not, drag it before or after the switchfield check
-      if(
-        chooseCustomField &&
-        !parentField.classList.contains('isDone')) {
-        for(let i=1; i<=9; i++)
-          {
-            
-            if(document.querySelector('.field' + i).classList.contains('isDone'))
-            {
-              document.querySelector('.field' + i).classList.add('isNotEditable');
-            }
-            else {
-              document.querySelector('.field' + i).style.backgroundColor = 'purple';
-              document.querySelector('.field' + i).classList.add('isNotEditable');
-
-              parentField.style.backgroundColor = 'white';
-              parentField.classList.remove('isNotEditable');
-              }
-          }
-          chooseCustomField = false;
-      }
-      
-      
-      if(event.target.style.backgroundColor != color1 && 
-      event.target.style.backgroundColor != color2 &&
-      !parentField.classList.contains('isNotEditable')
-      )
-      {
-          if(setUpGameOnce) {
-
-            if(!parentField.classList.contains('isDone')) {
-
-              parentField.classList.add('isNotEditable');
-              parentField.style.backgroundColor = 'purple';
-            }
-            
-
-            if(
-              !parentField.classList.contains('isDone') &&
-              !document.querySelector('.field' + numberAsString).classList.contains('isDone')) {
-
-              document.querySelector('.field' + numberAsString).classList.remove('isNotEditable');
-              document.querySelector('.field' + numberAsString).style.backgroundColor = 'white';
-            }
-            
-          }
-
-          if(!parentField.classList.contains('isDone'))
-          {
-            if(isX)
-            {
-              event.target.style.backgroundColor = color1;
-              document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
-
-            }
-            else if (!isX) {
-              event.target.style.backgroundColor = color2;
-              document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
-            }
-                
-            isX = !isX;
-            event.target.style.borderRadius = '10px';
-          }
-
-
-
-
-          // FIXED: when the player is on a won field and chooses a cell in this field, the field gets reverted to white
-        if(document.querySelector('.field' + numberAsString).classList.contains('isDone'))
-        {
-
-          for(let i=1; i<=9; i++)
-            {
-              
-              if(document.querySelector('.field' + i).classList.contains('isDone'))
-              {
-                // document.querySelector('.field' + i). maybe this would work
-              }
-              else {
-                document.querySelector('.field' + i).classList.remove('isNotEditable');
-                document.querySelector('.field' + i).style.backgroundColor = 'white';
-                }
-            }
-            chooseCustomField = true;
-        }
-      }
-
-
-
-
-        // execute this once to start the game
-        if(!setUpGameOnce)
-        {
-          document.querySelector('.field' + numberAsString).classList.add('startfield');
-  
-          for(let i=1;i<=9;i++)
-          {
-            if(document.querySelector('.field' + i).classList.contains('startfield'))
-            {
-               document.querySelector('.field' + i).style.backgroundColor = 'white';
-               document.querySelector('.field' + i).classList.remove('isNotEditable');
-            }
-            else {
-               document.querySelector('.field' + i).style.backgroundColor = 'purple';
-               document.querySelector('.field' + i).classList.add('isNotEditable');
-            }
-          }
-
-          setUpGameOnce = true;
-        }
-        
-        
-        checkRows(event.target);
-        checkFields();
-    });
-
-});
-  
-
-
-    function checkRows(cellTarget) {
-    let cell = cellTarget.classList;
-    let parentField = cellTarget.closest('table').closest('td');
-
-
-
-    function compareRows(table, cell, othercell1, othercell2)
-    {
-      if(
-        !document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.contains('isDone') &&
-         document.querySelector('.subcell' + table + cell).style.backgroundColor === document.querySelector('.subcell' + table + othercell1).style.backgroundColor &&
-         document.querySelector('.subcell' + table + cell).style.backgroundColor === document.querySelector('.subcell' + table + othercell2).style.backgroundColor &&
-          (
-          document.querySelector('.subcell' + table + cell).style.backgroundColor === color1 || 
-          document.querySelector('.subcell' + table + cell).style.backgroundColor === color2  
-          )
-        )
-         {
-          document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
-          parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
-           return true;
-         }
-         return false;
-    }
-
-    for(let table=1; table<=9; table++) {
-      for(let cell=1; cell<=7; cell+=3)
-        if(compareRows(table, cell, [cell + 1], [cell + 2])) {}
-
-      for(let cell=1; cell<=3; cell++)
-        if(compareRows(table, cell, [cell + 3], [cell + 6])) {}
-
-      
-      if(compareRows(table, 1, 5, 9)) {}
-      if(compareRows(table, 3, 5, 7)) {}
-    
-    }
-
-  }
-
-
-  function styleCellWinner(winnerNum)
-    {
-      alert(getCellParentCL(event.target.classList));
-
-          document.getElementById('winnerText').textContent = 'GEWINNER GEWINNER HUEHNCHENDINNER';
-
-          parentField.classList.add('notEditable');
-          parentField.style.backgroundColor = isP1('subcell' + winnerNum);
-          parentField.style.borderRadius = '20px';
-    }
-
-  function getCellParentCL(subcell)
-  {
-    return document.querySelector('.' + subcell).closest('table').closest('td').classList
-  }
-
-  function checkFields() {
-
-    for(let i=1;i<=3;i++)
-    {
-
-      if(isP1('field' + i) != null &&
-         isP1('field' + i) == isP1('field' + [i+3]) &&
-         isP1('field' + i) == isP1('field' + [i+6]))
-         {
-          endGame(isP1('field' + i));
-         }
-    }
-
-    for(let i=1;i<=7;i+=3)
-    {
-
-      if(isP1('field' + i) != null &&
-         isP1('field' + i) == isP1('field' + [i+1]) &&
-         isP1('field' + i) == isP1('field' + [i+2]))
-         {
-          endGame(isP1('field' + i));
-         }
-    }
-
-    if(isP1('field1') != null &&
-       isP1('field1') == isP1('field5') &&
-       isP1('field1') == isP1('field9'))
-         {
-          endGame(isP1('field1'));
-         }
-
-    if(isP1('field3') != null &&
-       isP1('field3') == isP1('field5') &&
-       isP1('field3') == isP1('field7'))
-       {
-        endGame(isP1('field3'));
-       }
-  }
-
-  function endGame(winner) {
-    if(winner == color1) winner = color1;
-    else winner = color2;
-
-    document.getElementById('winnerText').textContent = "The " + winner + " player wins";
-
-    for(let i=1;i<=9;i++)
-          {
-            if(document.querySelector('.field' + i).classList.contains('isDone'))
-            {
-
-            }
-            else {
-               document.querySelector('.field' + i).style.backgroundColor = 'purple';
-               document.querySelector('.field' + i).classList.add('isNotEditable');
-            }
-          }
-  }
-
-  function isP1(field)
-  {
-    if     (document.querySelector('.' + field).style.backgroundColor === color1) return color1;
-    else if(document.querySelector('.' + field).style.backgroundColor === color2) return color2;
-  }
+<script src="script.js" defer>
 </script>
 
 </html>

@@ -1,0 +1,28 @@
+html {
+    font-family: "Bahnschrift";
+}
+
+table {
+    border-collapse: collapse;
+    align-items: center;
+}
+
+th, td {
+  border: 3px solid #dddddd;
+  text-align: left;
+  padding: 40px;
+  font-size: xx-large;
+}
+
+[class^="subtable"] {
+  cursor: pointer;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}

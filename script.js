@@ -91,6 +91,9 @@ subCellList.forEach(function(subcell) {
           event.target.style.borderRadius = '10px';
         }
 
+
+
+
         // FIXED: when the player is on a won field and chooses a cell in this field, the field gets reverted to white
         // HERE 1st
         if(document.querySelector('.field' + numberAsString).classList.contains('isDone'))
@@ -143,6 +146,7 @@ subCellList.forEach(function(subcell) {
 
 
   function checkRows(cellTarget) {
+  let cell = cellTarget.classList;
   let parentField = cellTarget.closest('table').closest('td');
 
 
@@ -164,7 +168,7 @@ subCellList.forEach(function(subcell) {
         document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
         parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
 
-        if(latestChosenField === latestWonField && document.querySelector(latestWonField).classList.contains('isDone'))
+        if(latestChosenField === latestWonField && document.querySelector("." + latestWonField).classList.contains('isDone'))
         {
             for(let i=1; i<=9; i++)
               {
@@ -176,11 +180,11 @@ subCellList.forEach(function(subcell) {
               }
               chooseCustomField = true;
     
-            document.getElementById('winnerText').textContent = latestWonField;
+            document.getElementById('winnerText').textContent = latestWonField + ' has been captured by player ' + document.querySelector("." + latestWonField).style.backgroundColor;
             latestWonField = '';
         }
 
-         return true;
+        return true;
        }
        return false;
   }

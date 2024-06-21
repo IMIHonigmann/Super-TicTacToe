@@ -46,11 +46,33 @@ th, td {
 }
 
 
-.isNotEditable, 
+.isNotEditable
+{
+    cursor: not-allowed;
+}
+
 .isDone {
     cursor: not-allowed;
-  }
+    animation: growinout cubic-bezier(.17,.67,.22,1.44) 0.2s forwards;
+}
 
+@keyframes growinout {
+    0% {
+        scale: 1;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+    50% {
+        scale: 0;
+        opacity: 0.5;
+        transform: rotate(30deg);
+    }
+    100% {
+        scale: 1;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
 
 th {
   background-color: #f2f2f2;

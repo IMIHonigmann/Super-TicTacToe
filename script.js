@@ -12,6 +12,7 @@ let chooseCustomField = false;
 let latestWonField;
 let latestChosenField;
 let clicked = false;
+let playedOnce = false;
 
 let setUpGameOnce = false;
 
@@ -101,7 +102,6 @@ subCellList.forEach(function(subcell) {
               event.target.classList.add('color1');
               li.textContent = color1;
               document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
-              
             }
             else if (!isX) {
                 event.target.style.backgroundColor = color2;
@@ -206,6 +206,8 @@ subCellList.forEach(function(subcell) {
         // TODO: Implement live counter message here
         latestWonField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList;
         document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
+        const audio1 = new Audio('fielddone.mp3');
+        audio1.play();
         parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
 
         // Enter CustomFieldChoice
@@ -262,6 +264,9 @@ function checkFields() {
 
   for(let i=1;i<=3;i++)
   {
+    // FIX: Sounds play everytime after two fields are aligned make it only play once
+    const audio1 = new Audio('fielddone.mp3');
+    const audio2 = new Audio('vine-boom.mp3');
 
     if(isP1('field' + i) != null &&
        isP1('field' + i) == isP1('field' + [i+3]) &&
@@ -269,17 +274,46 @@ function checkFields() {
        {
         endGame(isP1('field' + i));
        }
+    if(!playedOnce) {
+      if(isP1('field' + i) != null &&
+         isP1('field' + i) == isP1('field' + [i+3]))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+      if(isP1('field' + i) != null &&
+         isP1('field' + [i+3]) == isP1('field' + [i+6]))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+    }
   }
 
+  console.log(playedOnce);
   for(let i=1;i<=7;i+=3)
   {
-
     if(isP1('field' + i) != null &&
        isP1('field' + i) == isP1('field' + [i+1]) &&
        isP1('field' + i) == isP1('field' + [i+2]))
        {
         endGame(isP1('field' + i));
        }
+
+    if(!playedOnce) {
+      if(isP1('field' + i) != null &&
+         isP1('field' + i) == isP1('field' + [i+1]))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+      if(isP1('field' + i) != null &&
+         isP1('field' + [i+1]) == isP1('field' + [i+2]))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+    }
   }
 
   if(isP1('field1') != null &&
@@ -289,11 +323,40 @@ function checkFields() {
         endGame(isP1('field1'));
        }
 
+  if(!playedOnce) {
+    if(isP1('field1') != null &&
+       isP1('field1') == isP1('field5'))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+    if(isP1('field1') != null &&
+       isP1('field5') == isP1('field9'))
+         {
+          // audio2.play();
+          playedOnce = true;
+         }
+  }
+
   if(isP1('field3') != null &&
      isP1('field3') == isP1('field5') &&
      isP1('field3') == isP1('field7'))
      {
       endGame(isP1('field3'));
+     }
+     if(!playedOnce) {
+       if(isP1('field3') != null &&
+          isP1('field3') == isP1('field5'))
+          {
+          //  audio2.play();
+           playedOnce = true;
+          }
+       if(isP1('field3') != null &&
+          isP1('field5') == isP1('field7'))
+          {
+          //  audio2.play();
+           playedOnce = true;
+          }
      }
 }
 

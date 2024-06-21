@@ -159,7 +159,7 @@ subCellList.forEach(function(subcell) {
       }
       
       
-      checkRows(event.target);
+      checkRows(event.target, numberAsString);
       checkFields();
 
     const targetElement = event.target;
@@ -170,7 +170,7 @@ subCellList.forEach(function(subcell) {
     classList: targetElement.classList,
     };
 
-      socket.emit('sendChoice', elementIdentifier, room);
+      socket.emit('sendChoice', elementIdentifier, room, numberAsString);
       clicked = true;
   });
 
@@ -185,7 +185,7 @@ subCellList.forEach(function(subcell) {
 
 
 
-  function checkRows(cellTarget) {
+  function checkRows(cellTarget, numAsString) {
   let cell = cellTarget.classList;
   let parentField = cellTarget.closest('table').closest('td');
 
@@ -193,7 +193,6 @@ subCellList.forEach(function(subcell) {
 
   function compareRows(table, cell, othercell1, othercell2)
   {
-    latestChosenField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.toString();
     if(
       !document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.contains('isDone') &&
        document.querySelector('.subcell' + table + cell).style.backgroundColor === document.querySelector('.subcell' + table + othercell1).style.backgroundColor &&
@@ -205,12 +204,13 @@ subCellList.forEach(function(subcell) {
       )
        {
         // TODO: Implement live counter message here
-        latestWonField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.toString();
+        latestWonField = document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList;
         document.querySelector('.subcell' + table + cell).closest('table').closest('td').classList.add('isDone');
         parentField.style.backgroundColor = document.querySelector('.subcell' + table + cell).style.backgroundColor;
 
-        if(latestChosenField === latestWonField && document.querySelector("." + latestWonField).classList.contains('isDone'))
-        {
+        // Enter CustomFieldChoice
+        if(document.querySelector('.field' + numAsString).classList.contains('isDone'))
+          {
             for(let i=1; i<=9; i++)
               {
                 if(!document.querySelector('.field' + i).classList.contains('isDone'))
@@ -220,15 +220,7 @@ subCellList.forEach(function(subcell) {
                 }
               }
               chooseCustomField = true;
-
-            const messageText = latestWonField + ' has been captured by player ' + document.querySelector("." + latestWonField).style.backgroundColor;
-            const li = document.createElement('li');
-            li.textContent = 'oooh very nice player ' + document.querySelector("." + latestWonField).style.backgroundColor;
-            document.getElementById('livecounter').appendChild(li);
-            // play oooh sound
-            document.getElementById('winnerText').textContent = messageText;
-            latestWonField = '';
-        }
+          }
 
         return true;
        }
@@ -342,7 +334,7 @@ function isP1(field)
 // })
 
 
-socket.on('getChoice', (choiceOfOtherPlayer) => {
+socket.on('getChoice', (choiceOfOtherPlayer, numAsString) => {
     const clickedTarget = document.querySelector('.' + choiceOfOtherPlayer.classList[0]);
     console.log(clickedTarget);
     let className = clickedTarget.classList[0];
@@ -423,7 +415,7 @@ socket.on('getChoice', (choiceOfOtherPlayer) => {
 
 
         // FIXED: when the player is on a won field and chooses a cell in this field, the field gets reverted to white
-        // HERE 1st
+        // Enter CustomFieldChoice
         if(document.querySelector('.field' + numberAsString).classList.contains('isDone'))
       {
 
@@ -465,7 +457,7 @@ socket.on('getChoice', (choiceOfOtherPlayer) => {
       }
       
       
-      checkRows(clickedTarget);
+      checkRows(clickedTarget, numAsString);
       checkFields();
     clicked = false;
 });

@@ -11,12 +11,21 @@ let currentField;
 let chooseCustomField = false; // Flag to allow choosing any field if current one is done.
 let latestWonField;
 let latestChosenField;
-let clicked = false;
+let clickedValidField = false;
 let playedOnce = false;
+let playSolo = true;
 
 let setUpGameOnce = false;
 
+document.getElementById('playsolobutton').addEventListener('click', () => {
+  playSolo = true;
+});
+
 socket.on('connect', () => {
+  playSolo = false;
+  if(document.getElementById("playsolobutton")) {
+    document.getElementById("playsolobutton").remove();
+  }
   room = socket.id;
   socket.emit('joinRoom', room, cbmessage => {
     console.log(cbmessage);
@@ -45,6 +54,11 @@ subCellList.forEach(function(subcell) {
     let className = event.target.classList[0];
     let numberAsString = className.charAt(className.length - 1);
     let parentField = event.target.closest('table').closest('td');
+
+    if(!parentField.classList.contains('isNotEditable') && !playSolo) {
+      document.querySelector('.maintable').classList.add('unclickable');
+      clickedValidField = true;
+    }
 
     // Check if the user can choose custom field and the parent field is not already done.
     if (chooseCustomField && !parentField.classList.contains('isDone')) {
@@ -137,8 +151,8 @@ subCellList.forEach(function(subcell) {
       classList: targetElement.classList,
     };
 
-    socket.emit('sendChoice', elementIdentifier, room, numberAsString);
-    clicked = true;
+    socket.emit('sendChoice', elementIdentifier, room, numberAsString, clickedValidField);
+    clickedValidField = false;
   });
 });
 
@@ -304,7 +318,10 @@ function isP1(field) {
   else if (document.querySelector('.' + field).style.backgroundColor === color2) return color2;
 }
 
-socket.on('getChoice', (choiceOfOtherPlayer, numAsString) => {
+socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) => {
+  if(clickedValid) {
+    document.querySelector('.maintable').classList.remove('unclickable');
+  }
   const clickedTarget = document.querySelector('.' + choiceOfOtherPlayer.classList[0]);
   console.log(clickedTarget);
   let className = clickedTarget.classList[0];
@@ -384,7 +401,7 @@ socket.on('getChoice', (choiceOfOtherPlayer, numAsString) => {
     setUpGameOnce = true;
   }
 
+
   checkRows(clickedTarget, numAsString);
   checkFields();
-  clicked = false;
 });

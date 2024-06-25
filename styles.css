@@ -14,6 +14,13 @@ th, td {
   font-size: xx-large;
 }
 
+.maintable {
+    cursor: pointer;
+}
+
+.unclickable {
+    pointer-events: none;
+}
 
 
 [class^="subtable"],

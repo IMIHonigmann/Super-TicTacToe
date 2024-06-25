@@ -20,10 +20,10 @@ io.on('connection', (socket) => {
         io.to(room).emit('message', message, room);
     });
 
-    socket.on('sendChoice', (data, room, numberAsString) => {
+    socket.on('sendChoice', (data, room, numberAsString, clickedValidField) => {
         console.log(data);
         // socket.to(room).emit('getChoice', data);
-        socket.broadcast.emit('getChoice', data, numberAsString);
+        socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
     });
 });
 

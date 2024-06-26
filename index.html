@@ -8,14 +8,17 @@
   <script src="https://cdn.socket.io/socket.io-3.0.0.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="initials">
+    <input id="ipinput" type="text" placeholder="Server IP" value="localhost" />
+    <button id="submitipbutton"> Connect to server </button>
+  </div>
+  <div class="container hidden" id="mothercontainer">
     <div class="centered-div">
       <div class="container">
         <h2 id="winnerText">
           Click a field to start the game
         </h2>
       </div>
-    
       <table class="maintable">
         <tbody>
           <tr>
@@ -237,10 +240,12 @@
     <ol id="livecounter">
     </ol>
   </div>
-  <p id="connectionstatus"> Status: <span style="color:red">Offline</span>, Server not running </p>
-  <input type="text" id="roominput" placeholder="Type your desired room name or id" />
-  <button id="joinbutton"> Join! </button>
-  <button id="playsolobutton"> Play Solo </button>
+  <div class="hidden" id="roominputs">
+    <p id="connectionstatus"> Status: <span style="color:red">Offline</span>, Server not running </p>
+    <input type="text" id="roominput" placeholder="Type your desired room name or id" />
+    <button id="joinbutton"> Join! </button>
+    <button id="playsolobutton"> Play Solo </button>
+  </div>
 
 </body>
 

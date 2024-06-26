@@ -22,6 +22,9 @@ th, td {
     pointer-events: none;
 }
 
+.hidden {
+    opacity: 0;
+}
 
 [class^="subtable"],
 .isNotEditable

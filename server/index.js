@@ -28,7 +28,8 @@ io.on('connection', (socket) => {
 
     socket.on('sendChoice', (socketID, data, room, numberAsString, clickedValidField) => {
         const roomIdentifier = io.sockets.adapter.rooms.get(room);
-        if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
+        const roomSize = io.sockets.adapter.rooms.get(data)?.size || 0;
+        if(roomSize > 1) if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
         // socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
     });
 });

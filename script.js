@@ -1,4 +1,3 @@
-const socket = io('ws://localhost:8080');
 let room;
 
 let isX = true; // Track which player's turn it is.
@@ -17,11 +16,22 @@ let playSolo = true;
 
 let setUpGameOnce = false;
 
+
 document.getElementById('playsolobutton').addEventListener('click', () => {
   playSolo = true;
 });
 
-socket.on('connect', () => {
+
+document.getElementById('submitipbutton').addEventListener('click', () => {
+  document.getElementById('mothercontainer').classList.remove('hidden');
+  document.getElementById('roominputs').classList.remove('hidden');
+  const ipinput = document.getElementById('ipinput');
+  if(ipinput.value === '') ipinput.value = 'localhost';
+  const submitipbutton = document.getElementById('submitipbutton');
+  const socket = io(`ws://${ipinput.value}:8080`);
+  ipinput.remove();
+  submitipbutton.remove();
+  socket.on('connect', () => {
   if(document.getElementById("playsolobutton")) {
     document.getElementById("playsolobutton").remove();
   }
@@ -414,4 +424,5 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
 
   checkRows(clickedTarget, numAsString);
   checkFields();
+  });
 });

@@ -35,7 +35,7 @@ socket.on('connect', () => {
     socket.emit('joinRoom', room, (cbmessage) => {
       playSolo = false;
       console.log(cbmessage);
-      document.getElementById('connectionstatus').textContent = `Status: Connected to ${room}`;
+      document.getElementById('connectionstatus').textContent = `Status: ${cbmessage}`;
     });
   });
 });
@@ -154,7 +154,7 @@ subCellList.forEach(function(subcell) {
       classList: targetElement.classList,
     };
 
-    socket.emit('sendChoice', elementIdentifier, room, numberAsString, clickedValidField);
+    socket.emit('sendChoice', socket.id, elementIdentifier, room, numberAsString, clickedValidField);
     clickedValidField = false;
   });
 });

@@ -21,9 +21,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('sendChoice', (data, room, numberAsString, clickedValidField) => {
-        console.log(data);
-        // socket.to(room).emit('getChoice', data);
-        socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
+        socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
+        // socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
     });
 });
 

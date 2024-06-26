@@ -22,23 +22,20 @@ document.getElementById('playsolobutton').addEventListener('click', () => {
 });
 
 socket.on('connect', () => {
-  playSolo = false;
   if(document.getElementById("playsolobutton")) {
     document.getElementById("playsolobutton").remove();
   }
-  room = socket.id;
-  socket.emit('joinRoom', room, cbmessage => {
-    console.log(cbmessage);
-  });
   console.log('Connected!');
-  document.getElementById('connectionstatus').textContent = `Playing to ${room}`;
+  document.getElementById('connectionstatus').textContent = `Status: Online, Connect to a room to play multiplayer`;
   socket.emit('message', '<connected> ' + socket.id);
+
   document.getElementById('joinbutton').addEventListener('click', () => {
     room = document.getElementById('roominput').value;
     console.log(room);
     socket.emit('joinRoom', room, (cbmessage) => {
+      playSolo = false;
       console.log(cbmessage);
-      document.getElementById('connectionstatus').textContent = `Connected to ${room}`;
+      document.getElementById('connectionstatus').textContent = `Status: Connected to ${room}`;
     });
   });
 });
@@ -126,6 +123,12 @@ subCellList.forEach(function(subcell) {
 
     // First move setup
     if (!setUpGameOnce) {
+      if(document.getElementById("roominput")) {
+        document.getElementById("roominput").remove();
+      }
+      if(document.getElementById("joinbutton")) {
+        document.getElementById("joinbutton").remove();
+      }
       document.querySelector('.field' + numberAsString).classList.add('startfield');
       for (let i = 1; i <= 9; i++) {
         if (document.querySelector('.field' + i).classList.contains('startfield')) {
@@ -319,6 +322,7 @@ function isP1(field) {
 }
 
 socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) => {
+  console.log('payload arrived');
   if(clickedValid) {
     document.querySelector('.maintable').classList.remove('unclickable');
   }
@@ -388,6 +392,12 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
   }
 
   if (!setUpGameOnce) {
+    if(document.getElementById("roominput")) {
+      document.getElementById("roominput").remove();
+    }
+    if(document.getElementById("joinbutton")) {
+      document.getElementById("joinbutton").remove();
+    }
     document.querySelector('.field' + numberAsString).classList.add('startfield');
     for (let i = 1; i <= 9; i++) {
       if (document.querySelector('.field' + i).classList.contains('startfield')) {

@@ -9,6 +9,9 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', (socket) => {
+    console.log('client connected');
+    const onlineCount = io.engine.clientsCount;
+    io.emit('sendPlayerCount', onlineCount);
     socket.on('joinRoom', (data, cb) => {
         const roomSize = io.sockets.adapter.rooms.get(data)?.size || 0;
         if(roomSize < 2) {
@@ -20,6 +23,12 @@ io.on('connection', (socket) => {
         else {
             cb(`You cannot join because room: ${data} is full`);
         }
+    });
+
+    socket.on('disconnect', () => {
+        console.log('client disconnected');
+        const onlineCount = io.engine.clientsCount;
+        io.emit('sendPlayerCount', onlineCount);
     });
     
     socket.on('message', (message, room) => {

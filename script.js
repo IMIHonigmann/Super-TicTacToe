@@ -50,6 +50,8 @@ document.getElementById('submitipbutton').addEventListener('click', () => {
   });
 });
 
+socket.on('sendPlayerCount', playerCount => document.getElementById('curplayercount').textContent = `Currently online: ${playerCount}`)
+
 socket.on('logmessage', (msg) => {
   console.log(msg);
 });

@@ -61,10 +61,11 @@ subCellList.forEach(function(subcell) {
 
   subcell.addEventListener('click', function(event) {
     let className = event.target.classList[0];
+    let subcellColor = event.target.classList[1];
     let numberAsString = className.charAt(className.length - 1);
     let parentField = event.target.closest('table').closest('td');
 
-    if(!parentField.classList.contains('isNotEditable') && !playSolo) {
+    if(!parentField.classList.contains('isNotEditable') && !playSolo && typeof subcellColor === 'undefined') {
       document.querySelector('.maintable').classList.add('unclickable');
       clickedValidField = true;
     }

@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
 
     socket.on('sendChoice', (socketID, data, room, numberAsString, clickedValidField) => {
         const roomIdentifier = io.sockets.adapter.rooms.get(room);
-        if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
+        if (typeof roomIdentifier !== "undefined") if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
         // socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
     });
 });

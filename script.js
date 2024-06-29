@@ -16,11 +16,26 @@ let playSolo = true;
 
 let setUpGameOnce = false;
 
+/*
+function countdown(countdownTime) {
+  function ctdwn() {
+    if(countdownTime > 0) {
+      countdownTime--;
+      document.getElementById('timeleft').textContent = 'Time left: 0:0' + countdownTime;
+      setTimeout(ctdwn, 1000);
+      return countdownTime;
+    }
+    else console.log('Time is up');
+  }
+  return ctdwn();
+}
+
+countdown(6);
+*/
 
 document.getElementById('playsolobutton').addEventListener('click', () => {
   playSolo = true;
 });
-
 
 document.getElementById('submitipbutton').addEventListener('click', () => {
   document.getElementById('mothercontainer').classList.remove('hidden');
@@ -29,6 +44,7 @@ document.getElementById('submitipbutton').addEventListener('click', () => {
   if(ipinput.value === '') ipinput.value = 'localhost';
   const submitipbutton = document.getElementById('submitipbutton');
   const socket = io(`ws://${ipinput.value}:8080`);
+  room = socket.id;
   ipinput.remove();
   submitipbutton.remove();
   socket.on('connect', () => {
@@ -136,6 +152,10 @@ subCellList.forEach(function(subcell) {
 
     // First move setup
     if (!setUpGameOnce) {
+      document.body.style.backgroundColor = 'black';
+      document.getElementById('winnerText').style.color = 'white';
+      document.getElementById('connectionstatus').style.color = 'white';
+      document.getElementById('curplayercount').style.color = 'white';
       if(document.getElementById("roominput")) {
         document.getElementById("roominput").remove();
       }
@@ -216,18 +236,6 @@ function checkRows(cellTarget, numAsString) {
     compareRows(table, 1, 5, 9);
     compareRows(table, 3, 5, 7);
   }
-}
-
-function styleCellWinner(winnerNum) {
-  alert(getCellParentCL(event.target.classList));
-  document.getElementById('winnerText').textContent = 'GEWINNER GEWINNER HUEHNCHENDINNER';
-  parentField.classList.add('notEditable');
-  parentField.style.backgroundColor = isP1('subcell' + winnerNum);
-  parentField.style.borderRadius = '20px';
-}
-
-function getCellParentCL(subcell) {
-  return document.querySelector('.' + subcell).closest('table').closest('td').classList;
 }
 
 function checkFields() {
@@ -405,6 +413,7 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
   }
 
   if (!setUpGameOnce) {
+    document.body.style.backgroundColor = 'red';
     if(document.getElementById("roominput")) {
       document.getElementById("roominput").remove();
     }

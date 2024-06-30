@@ -33,14 +33,35 @@ function countdown(countdownTime) {
 countdown(6);
 */
 
+if (localStorage.getItem('user')) {
+  const jsonString = localStorage.getItem('user');
+  const userObject = JSON.parse(jsonString);
+  document.getElementById('ipinput').value = userObject.ip_address;
+} else {
+  console.log("No ip found. Reverting to localhost");
+}
+
 document.getElementById('playsolobutton').addEventListener('click', () => {
   playSolo = true;
 });
 
 document.getElementById('submitipbutton').addEventListener('click', () => {
+
   document.getElementById('mothercontainer').classList.remove('hidden');
   document.getElementById('roominputs').classList.remove('hidden');
   const ipinput = document.getElementById('ipinput');
+
+  const storedIP = {ip_address: ipinput.value};
+  storedIPString = JSON.stringify(storedIP);
+  localStorage.setItem('user', storedIPString);
+  if (localStorage.getItem('room')) {
+    const jsonString = localStorage.getItem('room');
+    const roomObject = JSON.parse(jsonString);
+    document.getElementById('roominput').value = roomObject.roomName;
+  } else {
+    console.log("No room found. Reverting to empty");
+  }
+
   if(ipinput.value === '') ipinput.value = 'localhost';
   const submitipbutton = document.getElementById('submitipbutton');
   const socket = io(`ws://${ipinput.value}:8080`);
@@ -57,6 +78,9 @@ document.getElementById('submitipbutton').addEventListener('click', () => {
 
   document.getElementById('joinbutton').addEventListener('click', () => {
     room = document.getElementById('roominput').value;
+    const storedRoom = {roomName: room};
+    const storedRoomString = JSON.stringify(storedRoom);
+    localStorage.setItem('room', storedRoomString);
     console.log(room);
     socket.emit('joinRoom', room, (cbmessage) => {
       playSolo = false;

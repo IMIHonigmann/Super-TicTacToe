@@ -14,24 +14,12 @@ let clickedValidField = false;
 let playedOnce = false;
 let playSolo = true;
 let countdownTime = 10;
-let customCountDownTime = 10;
+let customCountDownTime = 2;
 let timerRunning = true;
 
 let setUpGameOnce = false;
 
 
-function startCountdown() {
-  console.log(countdownTime);
-  if(timerRunning) {
-    if(countdownTime > 0) {
-      countdownTime--;
-      document.getElementById('timeleft').textContent = 'Time left: 0:0' + countdownTime;
-      setTimeout(startCountdown, 1000);
-      return countdownTime;
-    }
-    else console.log('Time is up'); // add a strike here
-  }
-}
 
 function stopCountDown() {
   timerRunning = false;
@@ -51,6 +39,7 @@ document.getElementById('playsolobutton').addEventListener('click', () => {
 });
 
 document.getElementById('submitipbutton').addEventListener('click', () => {
+
 
   document.getElementById('mothercontainer').classList.remove('hidden');
   document.getElementById('roominputs').classList.remove('hidden');
@@ -223,6 +212,38 @@ subCellList.forEach(function(subcell) {
   });
 });
 
+function endGame(winner) {
+  if (winner == color1) winner = color1;
+  else winner = color2;
+
+  document.getElementById('winnerText').textContent = "The " + winner + " player wins";
+
+  // Make all fields non-editable after game ends
+  for (let i = 1; i <= 9; i++) {
+    if (document.querySelector('.field' + i).classList.contains('isDone')) {
+    } else {
+      document.querySelector('.field' + i).style.backgroundColor = 'purple';
+      document.querySelector('.field' + i).classList.add('isNotEditable');
+    }
+  }
+}
+function startCountdown() {
+  console.log(countdownTime);
+  if(timerRunning) {
+    if(countdownTime > 0) {
+      countdownTime--;
+      document.getElementById('timeleft').textContent = 'Time left: 0:0' + countdownTime;
+      setTimeout(startCountdown, 1000);
+    }
+    else {
+        endGame(isX ? color2 : color1);
+        document.getElementById('winnerText').textContent = 'You have exceeded your timelimit and are a coward.'
+        socket.emit('timeExceeded', socket.id, room);
+      // add a strike here
+    }
+  }
+}
+
 function checkRows(cellTarget, numAsString) {
   let cell = cellTarget.classList;
   let parentField = cellTarget.closest('table').closest('td');
@@ -352,22 +373,6 @@ function checkFields() {
   }
 }
 
-function endGame(winner) {
-  if (winner == color1) winner = color1;
-  else winner = color2;
-
-  document.getElementById('winnerText').textContent = "The " + winner + " player wins";
-
-  // Make all fields non-editable after game ends
-  for (let i = 1; i <= 9; i++) {
-    if (document.querySelector('.field' + i).classList.contains('isDone')) {
-    } else {
-      document.querySelector('.field' + i).style.backgroundColor = 'purple';
-      document.querySelector('.field' + i).classList.add('isNotEditable');
-    }
-  }
-}
-
 function isP1(field) {
   if (document.querySelector('.' + field).style.backgroundColor === color1) return color1;
   else if (document.querySelector('.' + field).style.backgroundColor === color2) return color2;
@@ -380,6 +385,9 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
   //////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////
   if(clickedValid) {
+    timerRunning = true;
+    countdownTime = customCountDownTime;
+    startCountdown();
     document.querySelector('.maintable').classList.remove('unclickable');
   }
   const clickedTarget = document.querySelector('.' + choiceOfOtherPlayer.classList[0]);
@@ -470,9 +478,12 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
     
     checkRows(clickedTarget, numAsString);
     checkFields();
-
-    countdownTime = 10;
-    timerRunning = true;
-    startCountdown();
   });
+
+  socket.on('exceededTheTimeLimit', () => {
+    endGame(isX ? color2 : color1);
+    const finalMessage = 'The other player returned to civilian life (fucking coward)';
+    document.getElementById('winnerText').textContent = finalMessage;
+    alert(finalMessage);
+  })
 });

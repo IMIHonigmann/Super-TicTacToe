@@ -14,7 +14,7 @@ let clickedValidField = false;
 let playedOnce = false;
 let playSolo = true;
 let countdownTime = 10;
-let customCountDownTime = 2;
+let customCountDownTime = 10;
 let timerRunning = true;
 
 let setUpGameOnce = false;
@@ -243,6 +243,8 @@ function endGame(winner) {
       document.querySelector('.field' + i).classList.add('isNotEditable');
     }
   }
+  stopCountDown();
+  document.getElementById('timeleft').textContent = ' ';
 }
 
 function startCountdown() {

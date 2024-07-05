@@ -37,9 +37,15 @@ io.on('connection', (socket) => {
 
     socket.on('sendChoice', (socketID, data, room, numberAsString, clickedValidField) => {
         const roomIdentifier = io.sockets.adapter.rooms.get(room);
-        if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
+        if (typeof roomIdentifier !== "undefined") if(roomIdentifier.has(socketID)) socket.to(room).emit('getChoice', data, room, numberAsString, clickedValidField);
         // socket.broadcast.emit('getChoice', data, room, numberAsString, clickedValidField);
     });
+
+    socket.on('timeExceeded', (socketID, room) => {
+        const roomIdentifier = io.sockets.adapter.rooms.get(room);
+        console.log('Ending the game...');
+        if (typeof roomIdentifier !== "undefined") if(roomIdentifier.has(socketID)) socket.to(room).emit('exceededTheTimeLimit');
+    })
 });
 
 const PORT = 8080;

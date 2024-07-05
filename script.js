@@ -5,7 +5,7 @@ let isFieldEditable;
 let subCellList = document.querySelectorAll('[class^="subcell"]');
 let fieldList = document.querySelectorAll('[class^="field"]');
 let color1 = 'black'; // Player 1 color
-let color2 = 'red'; // Player 2 color
+let color2 = 'red';   // Player 2 color
 let currentField;
 let chooseCustomField = false; // Flag to allow choosing any field if current one is done.
 let latestWonField;
@@ -13,22 +13,109 @@ let latestChosenField;
 let clickedValidField = false;
 let playedOnce = false;
 let playSolo = true;
+let countdownTime = 10;
+let customCountDownTime = 2;
+let timerRunning = true;
 
 let setUpGameOnce = false;
 
+function setUpFields() {
+  for (let i = 1; i <= 9; i++) {
+    const fieldI = document.querySelector('.field' + i);
+    if (fieldI.classList.contains('startfield')) {
+      fieldI.style.backgroundColor = 'white';
+      fieldI.classList.remove('isNotEditable');
+    } else {
+      fieldI.style.backgroundColor = 'purple';
+      fieldI.classList.add('isNotEditable');
+    }
+  }
+  setUpGameOnce = true;
+}
+
+function stopCustomFieldEvent(parentField) {
+  if (chooseCustomField && !parentField.classList.contains('isDone')) {
+    for (let i = 1; i <= 9; i++) {
+      const fieldI = document.querySelector('.field' + i);
+      if (fieldI.classList.contains('isDone')) {
+        fieldI.classList.add('isNotEditable');
+      } else {
+        fieldI.style.backgroundColor = 'purple';
+        fieldI.classList.add('isNotEditable');
+        parentField.style.backgroundColor = 'white';
+        parentField.classList.remove('isNotEditable');
+      }
+    }
+    chooseCustomField = false;
+  }
+}
+
+function removeRoomInput(numberAsString, color) {
+  document.body.style.backgroundColor = color;
+  if(document.getElementById("roominput")) {
+    document.getElementById("roominput").remove();
+  }
+  if(document.getElementById("joinbutton")) {
+    document.getElementById("joinbutton").remove();
+  }
+  document.querySelector('.field' + numberAsString).classList.add('startfield');
+}
+
+function stopCountDown() {
+  timerRunning = false;
+  document.getElementById('timeleft').textContent = 'Waiting for other player...';
+}
+
+function checkWhoScored(clickedTarget) {
+  const li = document.createElement('li');
+  if (isX) {
+    clickedTarget.style.backgroundColor = color1;
+    clickedTarget.classList.add('color1');
+    li.textContent = color1;
+    document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
+    
+  } else {
+    clickedTarget.style.backgroundColor = color2;
+    clickedTarget.classList.add('color2');
+    li.textContent = color2;
+    document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
+  }
+  document.getElementById('livecounter').appendChild(li);
+  isX = !isX;
+}
+
+if (localStorage.getItem('user')) {
+  const jsonString = localStorage.getItem('user');
+  const userObject = JSON.parse(jsonString);
+  document.getElementById('ipinput').value = userObject.ip_address;
+} else {
+  console.log("No ip found. Reverting to localhost");
+}
 
 document.getElementById('playsolobutton').addEventListener('click', () => {
   playSolo = true;
 });
 
-
 document.getElementById('submitipbutton').addEventListener('click', () => {
   document.getElementById('mothercontainer').classList.remove('hidden');
   document.getElementById('roominputs').classList.remove('hidden');
   const ipinput = document.getElementById('ipinput');
+
+  const storedIP = {ip_address: ipinput.value};
+  storedIPString = JSON.stringify(storedIP);
+  localStorage.setItem('user', storedIPString);
+  if (localStorage.getItem('room')) {
+    const jsonString = localStorage.getItem('room');
+    const roomObject = JSON.parse(jsonString);
+    document.getElementById('roominput').value = roomObject.roomName;
+  } else {
+    console.log("No room found. Reverting to empty");
+  }
+
   if(ipinput.value === '') ipinput.value = 'localhost';
   const submitipbutton = document.getElementById('submitipbutton');
   const socket = io(`ws://${ipinput.value}:8080`);
+  room = socket.id;
   ipinput.remove();
   submitipbutton.remove();
   socket.on('connect', () => {
@@ -41,6 +128,9 @@ document.getElementById('submitipbutton').addEventListener('click', () => {
 
   document.getElementById('joinbutton').addEventListener('click', () => {
     room = document.getElementById('roominput').value;
+    const storedRoom = {roomName: room};
+    const storedRoomString = JSON.stringify(storedRoom);
+    localStorage.setItem('room', storedRoomString);
     console.log(room);
     socket.emit('joinRoom', room, (cbmessage) => {
       playSolo = false;
@@ -71,23 +161,12 @@ subCellList.forEach(function(subcell) {
     }
 
     // Check if the user can choose custom field and the parent field is not already done.
-    if (chooseCustomField && !parentField.classList.contains('isDone')) {
-      for (let i = 1; i <= 9; i++) {
-        if (document.querySelector('.field' + i).classList.contains('isDone')) {
-          document.querySelector('.field' + i).classList.add('isNotEditable');
-        } else {
-          document.querySelector('.field' + i).style.backgroundColor = 'purple';
-          document.querySelector('.field' + i).classList.add('isNotEditable');
-          parentField.style.backgroundColor = 'white';
-          parentField.classList.remove('isNotEditable');
-        }
-      }
-      chooseCustomField = false;
-    }
+    stopCustomFieldEvent(parentField)
 
     // Ensure the clicked cell is neither player color and the parent field is not 'NotEditable'
-    if (event.target.style.backgroundColor != color1 && 
-        event.target.style.backgroundColor != color2 &&
+    const cellBG = event.target.style.backgroundColor;
+    if (cellBG != color1 && 
+        cellBG != color2 &&
         !parentField.classList.contains('isNotEditable')) {
       
       // Set up the game and apply initial rules post first move.
@@ -97,29 +176,18 @@ subCellList.forEach(function(subcell) {
           parentField.style.backgroundColor = 'purple';
         }
 
+        const curCell = document.querySelector('.field' + numberAsString);
         if (!parentField.classList.contains('isDone') &&
-            !document.querySelector('.field' + numberAsString).classList.contains('isDone')) {
-          document.querySelector('.field' + numberAsString).classList.remove('isNotEditable');
-          document.querySelector('.field' + numberAsString).style.backgroundColor = 'white';
+            !curCell.classList.contains('isDone')) {
+          curCell.classList.remove('isNotEditable');
+          curCell.style.backgroundColor = 'white';
         }
       }
 
       // Handle the player's move
       if (!parentField.classList.contains('isDone')) {
-        const li = document.createElement('li');
-        if (isX) {
-          event.target.style.backgroundColor = color1;
-          event.target.classList.add('color1');
-          li.textContent = color1;
-          document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
-        } else {
-          event.target.style.backgroundColor = color2;
-          event.target.classList.add('color2');
-          li.textContent = color2;
-          document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
-        }
-        document.getElementById('livecounter').appendChild(li);
-        isX = !isX;
+        stopCountDown();
+        checkWhoScored(event.target);
       }
 
       // Allow choosing any field if the next field is already won.
@@ -136,23 +204,12 @@ subCellList.forEach(function(subcell) {
 
     // First move setup
     if (!setUpGameOnce) {
-      if(document.getElementById("roominput")) {
-        document.getElementById("roominput").remove();
-      }
-      if(document.getElementById("joinbutton")) {
-        document.getElementById("joinbutton").remove();
-      }
-      document.querySelector('.field' + numberAsString).classList.add('startfield');
-      for (let i = 1; i <= 9; i++) {
-        if (document.querySelector('.field' + i).classList.contains('startfield')) {
-          document.querySelector('.field' + i).style.backgroundColor = 'white';
-          document.querySelector('.field' + i).classList.remove('isNotEditable');
-        } else {
-          document.querySelector('.field' + i).style.backgroundColor = 'purple';
-          document.querySelector('.field' + i).classList.add('isNotEditable');
-        }
-      }
-      setUpGameOnce = true;
+      document.getElementById('winnerText').style.color = 'white'; //
+      document.getElementById('connectionstatus').style.color = 'white'; //
+      document.getElementById('curplayercount').style.color = 'white'; //
+      document.getElementById('timeleft').style.color = 'white'; //
+      removeRoomInput(numberAsString, color1);
+      setUpFields();
     }
 
     // Check for winner after every move
@@ -171,6 +228,39 @@ subCellList.forEach(function(subcell) {
     clickedValidField = false;
   });
 });
+
+function endGame(winner) {
+  if (winner == color1) winner = color1;
+  else winner = color2;
+
+  document.getElementById('winnerText').textContent = "The " + winner + " player wins";
+
+  // Make all fields non-editable after game ends
+  for (let i = 1; i <= 9; i++) {
+    if (document.querySelector('.field' + i).classList.contains('isDone')) {
+    } else {
+      document.querySelector('.field' + i).style.backgroundColor = 'purple';
+      document.querySelector('.field' + i).classList.add('isNotEditable');
+    }
+  }
+}
+
+function startCountdown() {
+  console.log(countdownTime);
+  if(timerRunning) {
+    if(countdownTime > 0) {
+      countdownTime--;
+      document.getElementById('timeleft').textContent = 'Time left: 0:0' + countdownTime;
+      setTimeout(startCountdown, 1000);
+    }
+    else {
+        endGame(isX ? color2 : color1);
+        document.getElementById('winnerText').textContent = 'You have exceeded your timelimit and are a coward.'
+        socket.emit('timeExceeded', socket.id, room);
+      // add a strike here
+    }
+  }
+}
 
 function checkRows(cellTarget, numAsString) {
   let cell = cellTarget.classList;
@@ -216,18 +306,6 @@ function checkRows(cellTarget, numAsString) {
     compareRows(table, 1, 5, 9);
     compareRows(table, 3, 5, 7);
   }
-}
-
-function styleCellWinner(winnerNum) {
-  alert(getCellParentCL(event.target.classList));
-  document.getElementById('winnerText').textContent = 'GEWINNER GEWINNER HUEHNCHENDINNER';
-  parentField.classList.add('notEditable');
-  parentField.style.backgroundColor = isP1('subcell' + winnerNum);
-  parentField.style.borderRadius = '20px';
-}
-
-function getCellParentCL(subcell) {
-  return document.querySelector('.' + subcell).closest('table').closest('td').classList;
 }
 
 function checkFields() {
@@ -313,22 +391,6 @@ function checkFields() {
   }
 }
 
-function endGame(winner) {
-  if (winner == color1) winner = color1;
-  else winner = color2;
-
-  document.getElementById('winnerText').textContent = "The " + winner + " player wins";
-
-  // Make all fields non-editable after game ends
-  for (let i = 1; i <= 9; i++) {
-    if (document.querySelector('.field' + i).classList.contains('isDone')) {
-    } else {
-      document.querySelector('.field' + i).style.backgroundColor = 'purple';
-      document.querySelector('.field' + i).classList.add('isNotEditable');
-    }
-  }
-}
-
 function isP1(field) {
   if (document.querySelector('.' + field).style.backgroundColor === color1) return color1;
   else if (document.querySelector('.' + field).style.backgroundColor === color2) return color2;
@@ -336,7 +398,14 @@ function isP1(field) {
 
 socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) => {
   console.log('payload arrived');
+  //////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
   if(clickedValid) {
+    timerRunning = true;
+    countdownTime = customCountDownTime;
+    startCountdown();
     document.querySelector('.maintable').classList.remove('unclickable');
   }
   const clickedTarget = document.querySelector('.' + choiceOfOtherPlayer.classList[0]);
@@ -344,88 +413,55 @@ socket.on('getChoice', (choiceOfOtherPlayer, room, numAsString, clickedValid) =>
   let className = clickedTarget.classList[0];
   let numberAsString = className.charAt(className.length - 1);
   let parentField = clickedTarget.closest('table').closest('td');
-
-  if (chooseCustomField && !parentField.classList.contains('isDone')) {
-    for (let i = 1; i <= 9; i++) {
-      if (document.querySelector('.field' + i).classList.contains('isDone')) {
-        document.querySelector('.field' + i).classList.add('isNotEditable');
-      } else {
-        document.querySelector('.field' + i).style.backgroundColor = 'purple';
-        document.querySelector('.field' + i).classList.add('isNotEditable');
-        parentField.style.backgroundColor = 'white';
-        parentField.classList.remove('isNotEditable');
-      }
-    }
-    chooseCustomField = false;
-  }
-
+  stopCustomFieldEvent(parentField);
+  
+  
   if (clickedTarget.style.backgroundColor != color1 &&
     clickedTarget.style.backgroundColor != color2 &&
     !parentField.classList.contains('isNotEditable')) {
-    if (setUpGameOnce) {
-      if (!parentField.classList.contains('isDone')) {
-        parentField.classList.add('isNotEditable');
-        parentField.style.backgroundColor = 'purple';
-      }
-
-      if (!parentField.classList.contains('isDone') &&
-        !document.querySelector('.field' + numberAsString).classList.contains('isDone')) {
-        document.querySelector('.field' + numberAsString).classList.remove('isNotEditable');
-        document.querySelector('.field' + numberAsString).style.backgroundColor = 'white';
-      }
-    }
-
-    if (!parentField.classList.contains('isDone')) {
-      const li = document.createElement('li');
-      if (isX) {
-        clickedTarget.style.backgroundColor = color1;
-        clickedTarget.classList.add('color1');
-        li.textContent = color1;
-        document.getElementById('winnerText').textContent = "It's Player " + color2 + "'s turn";
-
-      } else {
-        clickedTarget.style.backgroundColor = color2;
-        clickedTarget.classList.add('color2');
-        li.textContent = color2;
-        document.getElementById('winnerText').textContent = "It's Player " + color1 + "'s turn";
-      }
-      document.getElementById('livecounter').appendChild(li);
-      isX = !isX;
-    }
-
-    if (document.querySelector('.field' + numberAsString).classList.contains('isDone')) {
-      for (let i = 1; i <= 9; i++) {
-        if (!document.querySelector('.field' + i).classList.contains('isDone')) {
-          document.querySelector('.field' + i).classList.remove('isNotEditable');
-          document.querySelector('.field' + i).style.backgroundColor = 'white';
+      if (setUpGameOnce) {
+        if (!parentField.classList.contains('isDone')) {
+          parentField.classList.add('isNotEditable');
+          parentField.style.backgroundColor = 'purple';
+        }
+        
+        const curCell = document.querySelector('.field' + numberAsString);
+        if (!parentField.classList.contains('isDone') &&
+            !curCell.classList.contains('isDone')) {
+          curCell.classList.remove('isNotEditable');
+          curCell.style.backgroundColor = 'white';
         }
       }
-      chooseCustomField = true;
-    }
-  }
-
-  if (!setUpGameOnce) {
-    if(document.getElementById("roominput")) {
-      document.getElementById("roominput").remove();
-    }
-    if(document.getElementById("joinbutton")) {
-      document.getElementById("joinbutton").remove();
-    }
-    document.querySelector('.field' + numberAsString).classList.add('startfield');
-    for (let i = 1; i <= 9; i++) {
-      if (document.querySelector('.field' + i).classList.contains('startfield')) {
-        document.querySelector('.field' + i).style.backgroundColor = 'white';
-        document.querySelector('.field' + i).classList.remove('isNotEditable');
-      } else {
-        document.querySelector('.field' + i).style.backgroundColor = 'purple';
-        document.querySelector('.field' + i).classList.add('isNotEditable');
+      
+      if (!parentField.classList.contains('isDone')) {
+        checkWhoScored(clickedTarget);
+      }
+      
+      if (document.querySelector('.field' + numberAsString).classList.contains('isDone')) {
+        for (let i = 1; i <= 9; i++) {
+          const fieldI = document.querySelector('.field' + i);
+          if (!fieldI.classList.contains('isDone')) {
+            fieldI.classList.remove('isNotEditable');
+            fieldI.style.backgroundColor = 'white';
+          }
+        }
+        chooseCustomField = true;
       }
     }
-    setUpGameOnce = true;
-  }
-
-
-  checkRows(clickedTarget, numAsString);
-  checkFields();
+    /////////////////////////////////////////////////////////////////// refactor
+    if (!setUpGameOnce) {
+      removeRoomInput(numberAsString, color2);
+      setUpFields();
+    }
+    
+    checkRows(clickedTarget, numAsString);
+    checkFields();
   });
+
+  socket.on('exceededTheTimeLimit', () => {
+    endGame(isX ? color2 : color1);
+    const finalMessage = 'The other player returned to civilian life (fucking coward)';
+    document.getElementById('winnerText').textContent = finalMessage;
+    alert(finalMessage);
+  })
 });

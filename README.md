@@ -22,7 +22,7 @@
 <h2> But... </h2>
 <p> I managed to get it working. </p>
 <p> If you wanna try it out (especially the multiplayer). Just download the repo and start the server the instances (in the current version) will connect automatically if you're on the same network </p>
-<p> If you want to play with someone outside of you're local network then you can try port forwarding if you have experience, host the server in the cloud or if you want an easy way: download <a href="https://www.radmin-vpn.com/"> Radmin VPN </a> and connect to eachother in a network. Just make sure that you change the IP Address in the code in both instances to make it work</p>
+<p> If you want to play with someone outside of you're local network then you can try port forwarding if you have experience, host the server in the cloud or if you want an easy way: download <a href="https://www.radmin-vpn.com/"> Radmin VPN </a> and connect to eachother in a network. Just make sure that you connect to the correct IP-Address in both instances to make it work</p>
 
 <h3> That's all I have to say have fun!</h3>
 <h4> NOTE: This project is still in development. I'm hard at work to iron it out </h4>
